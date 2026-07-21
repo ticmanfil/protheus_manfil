@@ -1,0 +1,77 @@
+#include 'protheus.ch'
+#include 'msobject.ch'
+#include 'totvs.framework.treports.integratedprovider.th'
+
+namespace sv.pon
+
+@totvsFrameworkTReportsIntegratedProvider(active=.T., tables='SRA', name='Lista de Aniversariantes', country='all', initialRelease='12.1.2410', customtables='SRA')
+
+/*/
+===============================================================================================================================
+Programa----------: sv16001
+Autor-------------: Renato Fuzessy Teixeira Filho
+Data da Criacao---: 17/07/2025
+===============================================================================================================================
+Descrição---------: Este programa serve criar um objeto SMARTVIEW da lista de aniversariante nascimento e empresa
+===============================================================================================================================
+Uso---------------: CONTROLE DE PONTO
+===============================================================================================================================
+Parametros--------: 
+===============================================================================================================================
+Retorno-----------: RELATORIO SMARTVIEW
+===============================================================================================================================
+Chamado(SPS)------: 
+===============================================================================================================================
+Setor-------------: CONTROLE DE PONTO
+=====================================================================================================================================
+										ATUALIZACOES SOFRIDAS DESDE A CONSTRUCAO INICIAL
+=====================================================================================================================================
+	Autor	|	Data	|										Motivo																
+------------:-----------:-----------------------------------------------------------------------------------------------------------:
+			|           | 																										
+------------:-----------:-----------------------------------------------------------------------------------------------------------:
+			|			|																											
+=====================================================================================================================================
+/*/
+
+class oListaAniversariante from totvs.framework.treports.integratedprovider.integratedprovider
+
+	//metodos da classes
+	public method new() as object
+	public method getData(nPage as numeric, oFilter as object) as object
+	public method getSchema() as object
+	protected method getStruct(aFlds as array) as array
+
+endclass
+
+method new() class oListaAniversariante
+_Super:new()
+
+	self:appendArea('funcionarios')
+
+	self:setDisplayName('Lista de Aniversariantes')
+
+	self:setDescription('Lista de Aniversariante Nascimento e Empresa')
+
+return self
+
+method getData() as object class oListaAniversariante
+	local cQry	as character
+
+	self:setPageSize(200)
+
+	cQry:= 'select #QueryFields# from '+retSQLName('SRA')+' where #QueryWhere#'
+	set:setQuery(cQry)
+
+	self:setOrder('RA_NOME')
+
+	self:SetWhere("RA_DEMISA='' AND D_E_L_E_T_ = ' '")
+
+return self:oData
+
+method getSchema() as object class oListaAniversariante
+
+	self:addProperty('Matricula','Matricula','string','Matricula','RA_MAT')
+	self:addProperty('Nome','Nome','string','Nome','RA_NOME')
+
+return self:oSchema
