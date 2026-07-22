@@ -2939,10 +2939,15 @@ user function ImpDanfe(_pcNf,_pcSerie,pViewPDF,pLPergunta)
 	oSetup:CQTDCOPIA	:= '01'
 	//oSetup:SetorderParms(MV_PAR01,MV_PAR02,MV_PAR03,MV_PAR04,MV_PAR05,MV_PAR06,MV_PAR07,MV_PAR08)
 
+	WritePrivateProfileString( cSession, "LOCAL", If( oSetup:GetProperty( PD_DESTINATION ) == 1, "SERVER", "CLIENT" ), .T. )
+	WritePrivateProfileString( cSession, "PRINTTYPE", If( oSetup:GetProperty( PD_DESTINATION ) == 1, "SPOOL", "PDF" ), .T. )
+	WritePrivateProfileString( cSession, "ORIENTATION", If( oSetup:GetProperty( PD_DESTINATION ) == 1, "PORTRAIT", "LANDSCAPE" ), .T. )
+
+/*
 	WriteProfString( cSession, "LOCAL"      , If(oSetup:GetProperty(PD_DESTINATION)==1 ,"SERVER"    ,"CLIENT"    ), .T. )
 	WriteProfString( cSession, "PRINTTYPE"  , If(oSetup:GetProperty(PD_PRINTTYPE)==1   ,"SPOOL"     ,"PDF"       ), .T. )
 	WriteProfString( cSession, "ORIENTATION", If(oSetup:GetProperty(PD_ORIENTATION)==1 ,"PORTRAIT"  ,"LANDSCAPE" ), .T. )
-	
+*/	
 	dbSelectArea('SF2')
 	SF2->(dbSetOrder(1))
 	SF2->(dbGoTop())
@@ -4462,10 +4467,7 @@ Setor-------------: TODAA EMPRESA
 /*/
 user Function Stamps(cTabela)
 
-	local	nI		as numeric,;
-			cConfig	as caracter,;
-			aConfig	as array,;
-			lRet	as logical
+	local	lRet	as logical
 
 	lRet:= .F.
 
@@ -4521,20 +4523,19 @@ user function AltParam(pParametro)
 
 	SetPrvt('oDlg1','oSay1','oSBtnOk','oSBtnCan','oMGet1')
 
-	define msdialog oDlg title 'ALTERAR PARAMETRO: '+pParametro from 000,000 to 085,305 colors 0,16777215 pixel
-		@003,004 say oSay1 prompt @cDescr size 152,007 of oDlg colors 0,16777215 pixel
-		
-		//@012,004 MSGET oGet1 VAR vGet1 SIZE 052,008 of oDlg PIXEL
+	define msdialog oDlg title 'Alterar Parametro: '+pParametro from 000,000 to 145,360 colors 0,16777215 pixel
+		@003,004 say oSay1 prompt @cDescr size 292,030 of oDlg colors 0,16777215 pixel
+
 		if cTipo $ 'C|N|D'
-			@012,004 msget oGet1 var vGet1 picture cPicture size 052,008 of oDlg PIXEL
+			@024,004 msget oGet1 var vGet1 picture cPicture size 090,008 of oDlg PIXEL
 		
 		elseif cTipo == 'L'
-			@012,004 checkbox oGet1 var vGet1 prompt 'Ativo (.T.)' size 052,008 of oDlg PIXEL
+			@024,004 checkbox oGet1 var vGet1 prompt 'Ativo (.T.)' size 052,008 of oDlg PIXEL
 		
 		endif
-		@027,075 button oButton1 prompt "Confirmar" size 037,012 of oDlg action (oDlg:End(),nOpcao := 1) pixel
-		@027,114 button oButton2 prompt "Cancelar" size 037,012 of oDlg action (oDlg:End(),nOpcao := 2) pixel
 
+		@036,075 button oButton1 prompt "Confirmar" size 037,012 of oDlg action (oDlg:End(),nOpcao := 1) pixel
+		@036,114 button oButton2 prompt "Cancelar" size 037,012 of oDlg action (oDlg:End(),nOpcao := 2) pixel
 	activate msdialog oDlg
 
 	if nOpcao = 1
@@ -4565,30 +4566,37 @@ Setor-------------: Geral
 /*/
 static function DescParam(pParam, pDescr, pTipo, pConteudo, pPicture)
 
+	local cValorAtual := GetMv(pParam)
+
 	dbSelectArea('SX6')
 	SX6->(dbSetOrder(1))
 	SX6->(dbGoTop())
 	if (SX6->(dbSeek(fwxFilial('SX6')+pParam)))	
-		pDescr		:= SX6->X6_DESCRIC+SX6->X6_DESC1+SX6->X6_DESC2
+		pDescr		:= SX6->X6_DESCRIC+CRLF+;
+						SX6->X6_DESC1+CRLF+;
+						SX6->X6_DESC2
 		pTipo		:= SX6->X6_TIPO
 
 		if pTipo == 'C'
-			pConteudo	:= SX6->X6_CONTEUD
+			pConteudo	:= iif(Empty(cValorAtual), SX6->X6_CONTEUD, cValorAtual)
 			pPicture	:= '@!'
 		
 		elseif pTipo == 'N'
-			pConteudo	:= nVal(SX6->X6_CONTEUD)
+			pConteudo	:= iif(Empty(cValorAtual), nVal(SX6->X6_CONTEUD), nVal(cValorAtual))
 			pPicture	:= '@E 999,999,999.99'
 		
 		elseif pTipo == 'D'
-			pConteudo	:= ctod(SX6->X6_CONTEUD)
+			pConteudo	:= iif(Empty(cValorAtual), ctod(SX6->X6_CONTEUD), ctod(cValorAtual))
 			pPicture	:= '@D 99/99/9999'
 		
 		elseif pTipo == 'L'
-			pConteudo	:= SX6->X6_CONTEUD
+			pConteudo	:= iif(Empty(cValorAtual), SX6->X6_CONTEUD, cValorAtual)
 			pPicture	:= ''
 
 		endif
+	
+	else
+		pConteudo := cValorAtual
 	
 	endif
  
