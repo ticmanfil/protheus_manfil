@@ -75,6 +75,7 @@ ONDE:Parametros do array a Rotina:
 		aadd(aSubRotina,{'Imp Pedidos Aglutinados','U_MV05005()',0,1,0,Nil}) 
 		aadd(aSubRotina,{'DANFE','U_XDANFEFAT()',0,2,0,Nil})
 		aadd(aSubRotina,{'Boleto Itaú','U_RD06010(FunName(), .T., .T.)',0,2,0,Nil})
+		aadd(aSubRotina,{'Enviar Boleta','MsgRun("Enviando boleta...","Processando...",{|| U_MA410_EnvioBoleta() })',0,2,0,Nil})
 
 	endif
 
@@ -86,6 +87,13 @@ ONDE:Parametros do array a Rotina:
 	restArea(aArea)
 
 return aRotina
+
+user function MA410_EnvioBoleta()
+	// Exibe mensagem de processamento enquanto a rotina FINA713('01') roda
+	MsgRun('Enviando boleta...','Processando...',{|| FINA713('01')})
+	u_msgInformacao('Envio da boleta finalizado.','[MA410] - Envio de Boleta')
+
+return .T.
 
 user function xDanfeFAT()
 

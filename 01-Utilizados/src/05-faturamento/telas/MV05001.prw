@@ -32,48 +32,13 @@ Setor-------------: FATURAMENTO
 /*/
 user function MV05001()
 
-//	Local oMainWnd
-//	Local aCoors := FWGetDialogSize( oMainWnd )
-//	Local oPanel, oFWLayer, oBrowse  
-	local oBrowse//, cPerg:= 'MV05001'
-	local cFiltroTela	:= ' 1=1 ' //' F2_XSTNOTA $ "|01|02|03|04|05|06|07|08|10|11|" '	//'1=1'
-
-//	private oDlgPrinc
+	local oBrowse
+	local cFiltroTela	:= ' 1=1 ' 
+	
 	private cCadastro 	:= '[MV05001] - Controle de Situação de Pedidos'
-	
-//	ajustaSx1(cPerg)
-//	if Pergunte(cPerg,.T.)
-/*		if mv_par01	= 0	//Pendentes
-			cFiltroTela	+= ' .and. F2_XSTNOTA $ "|09|12|03|04|05|06|07|08|10|" '
-		elseif mv_par01	= 1	//A Entregar
-			cFiltroTela	+= ' .and. F2_XSTNOTA $ "|06|07|" '
-		elseif mv_par01	= 2	//Entregues
-			cFiltroTela	+= ' .and. F2_XSTNOTA $ "|09|11|" '
-		elseif mv_par01	= 3	//TODOS
-			cFiltroTela	+= '  '
-		endif
-*/
-//		if alltrim(mv_par01) == "" .OR. alltrim(mv_par01) == "0"
-//			cFiltroTela	+= ' '
-//		else 
-//			cFiltroTela	+= ' .AND. F2_VEND1 == '+char(39)+mv_par01+char(39)+' '
-//		endif
-//	endif
-
-//	Define MsDialog oDlgPrinc Title cCadastro From aCoors[1], aCoors[2] To aCoors[3], aCoors[4] Pixel
-	
-	/* Cria o conteiner onde são colocados os browses */
-//	oFWLayer := FWLayer():New()
-//	oFWLayer:Init( oDlgPrinc, .F., .T. )
-	
-	/* Define Painel Principal */
-//	oFWLayer:AddLine( 'FULL', 100, .F. )// Cria uma "linha" com 100% da tela
-//	oFWLayer:AddCollumn( 'ALL', 100, .T., 'FULL' )// Na "linha" criada eu crio uma coluna com 100% da tamanho dela
-//	oPanel := oFWLayer:GetColPanel( 'ALL', 'FULL' )// Pego o objeto desse do container
 	
 	/* FWmBrowse */
 	oBrowse:= FWmBrowse():New()
-//	oBrowse:SetOwner( oPanel ) // Aqui se associa o browse ao componente de tela
 	oBrowse:SetDescription( cCadastro )
 	oBrowse:DisableDetails()
 	oBrowse:SetAlias( 'SF2' )
@@ -81,8 +46,6 @@ user function MV05001()
 	oBrowse:SetProfileID( '1' ) // Identificador ID para o Browse
 	oBrowse:ForceQuitButton()	// Exibicao do botao Sair  
 	oBrowse:SetFilterDefault(cFiltroTela) //Filtros da rotina
-//	oBrowse:SetOnlyFields( { 'ZF0_TIPO' , 'ZF0_ANO' , 'ZF0_PERIOD' , 'ZF0_DATADE', 'ZF0_DATAAT' } )
- 	//oBrowse:addButton('Mapa da Produção', u_RD39001(), nil, 8, nil, [ lNeedFind], [ nRealOpc], [ cOperatId], [ cToolBar])
 	
 	/* Legendas */ 
 	oBrowse:AddLegend( "F2_XSTNOTA == '01' "	, "BR_VERDE"		, "01 - Faturado",,.F. )
@@ -102,7 +65,7 @@ user function MV05001()
 	oBrowse:AddLegend( "F2_XSTNOTA == '15' "	, "BR_PRETO_3"		, "15 - Carga",,.F. )
 	oBrowse:AddLegend( "F2_XSTNOTA == '16' "	, "BR_CANCEL"		, "16 - Cancela Carga",,.F. )
 
-/*BR_MARRON_OCEAN*/
+	/*BR_MARRON_OCEAN*/
 	oBrowse:AddLegend( "F2_XSTNOTA == '17' "	, "BR_PINK"			, "17 - Retorno Carga",,.F. )
 	oBrowse:AddLegend( "F2_XSTNOTA == '18' "	, "BR_CANCEL"		, "18 - Canc. Saiu p/Entrega",,.F. )
 	oBrowse:AddLegend( "F2_XSTNOTA == '19' "	, "BR_CANCEL"		, "19 - Canc. Retorno de Carga",,.F. )
@@ -117,8 +80,6 @@ user function MV05001()
 
 	oBrowse:Activate()      
 	
-//	Activate MsDialog oDlgPrinc Center
-
 return
 
 
@@ -128,14 +89,13 @@ static function ModelDef
 	local oModel
 	
 	/* Carregar a estrutura de dados */
-//	local oStrZ15	:= FWFormStruct(1,'Z15', { |cCampo| VerCampo1(cCampo) })
 	local oStrSF2	:= FWFormStruct(1,'SF2', { |cCampo| VerCmpP('SF2',cCampo) })
 	local oStrZ03	:= FWFormStruct(1,'Z03', { |cCampo| VerCmpP('Z03',cCampo) })
 	local oStrZ07	:= FWFormStruct(1,'Z07')
 	
 	/* Definir propriedades da estrutura de dados */
 	Criagat(oStrSF2,oStrZ03,oStrZ07)
-	//SetPropM(oStrSF2,oStrZ03,oStrZ07)
+	SetPropM(oStrSF2,oStrZ03,oStrZ07)
 	
 	/* Definir modelo de dados */
 	oModel	:= MPFormModel():New('MV05001_MVC', /*bPreValidacao*/, /*bPosValidacao*/,{|oModel| MV05001GRV(oModel) }/*bCommit*/, /*bCancel*/ )
@@ -144,10 +104,7 @@ static function ModelDef
 	/* editar propriedades do modelo de dados */
 	oModel:addFields('FIELD_SF2',,oStrSF2)
 	oModel:addGrid('GRID_Z03','FIELD_SF2' ,oStrZ03, /*bLinePre*/, /*bLinePost*/, /*bPreVal*/, /*bPosVal*/, /*BLoad*/ )
-//	oModel:addGrid('GRID_Z03','FIELD_SF2' ,oStrZ03, { |oMdlG,nLine,cAcao,cCampo| COMP023LPRE( oMdlG, nLine, cAcao, cCampo ) }/*bLinePre*/, /*bLinePost*/, /*bPreVal*/, /*bPosVal*/, /*BLoad*/ )
-	oModel:addGrid('GRID_Z07','GRID_Z03' ,oStrZ07, , , /*bLinePre*/, {|oModel, nLine, cAction, cField| MV05001LOK(oModel, nLine, cAction, cField)}/*bPreVal*/, /*bPosVal*/,/*BLoad*/ )
-//	oModel:addGrid('GRID_Z07','GRID_Z03' ,oStrZ07, , , { |oMdlG,nLine,cAcao,cCampo| COMP023LPRE( oMdlG, nLine, cAcao, cCampo ) } /*bLinePre*/, {|oModel, nLine, cAction, cField| MV05001LOK(oModel, nLine, cAction, cField)}/*bPreVal*/, /*bPosVal*/,/*BLoad*/ )
-//	oModel:addGrid('GRID_ZAB','FIELD_ZAA' ,oStrZAB, { |oMdlG,nLine,cAcao,cCampo| COMP023LPRE( oMdlG, nLine, cAcao, cCampo ) } /*bLinePre*/, /*bLinePost*/, /*bPreVal*/, /*bPosVal*/, /*BLoad*/ )
+	oModel:addGrid('GRID_Z07','GRID_Z03' ,oStrZ07, , , /*bLinePre*/, {|oModel, nLine, cAction, cField| MV05001LOK(oModel, nLine, cAction, cField)}/*bPreVal*/, /*bPosVal*/, {|oModelGrid| MV05001_BLOAD_Z07(oModelGrid)}/*BLoad*/ )
 
 	/*Relacao entre as Estrutura*/
 	oModel:SetRelation('GRID_Z03',{{'Z03_FILIAL','xFilial("SF2")'}, {'Z03_SERIE', 'F2_SERIE'}, {'Z03_NOTA', 'F2_DOC'}}, Z03->(IndexKey(1)))
@@ -161,22 +118,9 @@ static function ModelDef
 	oModel:GetModel('GRID_Z03'):setUniqueLine({'Z03_ITEM'})
 	oModel:GetModel('GRID_Z07'):setUniqueLine({'Z07_ITEMST'})
 	
-	/* Valida propriedades de Insert, Update e Delete de Linhas na Grid*/
-	//oModel:GetModel( 'GRID_ZAB' ):SetNoInsertLine()
-	//oModel:GetModel( 'GRID_ZAB' ):SetNoUpdateLine()
-	//oModel:GetModel( 'GRID_ZAB' ):SetNoDeleteLine()
-	//oModel:GetModel( 'GRID_Z03' ):SetNoDeleteLine()
-	//oModel:GetModel( 'GRID_Z07' ):SetNoDeleteLine()
-	
-	/* Seta quantidade máxima de linhas na Grid */
-	//oModel:GetModel( 'GRID_ZAB' ):SetMaxLine(3)
-
 	/* Indica que é opcional ter dados nas Grids permitindo salvar a grid vazia*/
 	oModel:GetModel( 'GRID_Z03' ):SetOptional(.F.)
 	oModel:GetModel( 'GRID_Z07' ):SetOptional(.F.)
-
-	/* Define que o modelo de dados não será gravado, apenas usado para consulta */
-	//oModel:GetModel("FIELD_SF2"):SetOnlyQuery(.T.)
 
 	/*Definicao da Chave Primaria*/
 	oModel:SetPrimaryKey({'F2_FILIAL', 'F2_SERIE', 'F2_DOC'})
@@ -213,9 +157,6 @@ static function ViewDef()
 	oView:addIncrementField('VIEW_Z03','Z03_ITEM')
 	oView:addIncrementField('VIEW_Z07','Z07_ITEMST')
 	
-	/*Incluir BOTOES customizados*/
-	//oView:addUserButton('Botão Customizado', 'CLIPS', {|oView| _botao()})
-	
 	/*Gerar Box de Visualizacao*/
 	oView:CreateHorizontalBox('SUPERIOR', 50)  			// <nome do box>, <%que vai ocupar na tela>
 	oView:CreateHorizontalBox('INFERIOR', 50)  			// <nome do box>, <%que vai ocupar na tela>
@@ -226,19 +167,18 @@ static function ViewDef()
 	oView:SetOwnerView('VIEW_SF2', 'SUPERIOR')			//
 	oView:SetOwnerView('VIEW_Z03', 'ESQUERDO')			//
 	oView:SetOwnerView('VIEW_Z07', 'DIREITO')			//
-	
+
 return oView
 
 
 /*CRIAR MENU DA ROTINA*/
 static function MenuDef()
 
-	local aRotina	:= {}
+	local aRotina	as array
 	
-//	aadd(aRotina,{'Visualizar'			, 'VIEWDEF.MV05001', 0, 2, 0, nil})
-//	aadd(aRotina,{'Incluir'				, 'VIEWDEF.MV05001', 0, 3, 0, nil})
+	aRotina	:= {}
+
 	aadd(aRotina,{'Alterar'				, 'VIEWDEF.MV05001', 0, 4, 0, nil})
-//	aadd(aRotina,{'Excluir'				, 'VIEWDEF.MV05001', 0, 5, 0, nil})
 	aadd(aRotina,{'Mapa de Producao'	, 'U_RD05006()', 0, 8, 0, nil})
 	aadd(aRotina,{'Acerta Peso'			, 'U_RD05011(.T.)', 0, 8, 0, nil})
 	aadd(aRotina,{'Imprimir'			, 'VIEWDEF.MV05001', 0, 8, 0, nil})
@@ -255,8 +195,6 @@ static function RemoveFld(oStrSF2,oStrZ03,oStrZ07)
 	oStrZ03:RemoveField('Z03_NOTA')
 	oStrZ03:RemoveField('Z03_STOCOR')
 	oStrZ03:RemoveField('Z03_DSTOCO')
-	oStrZ03:RemoveField('Z03_CONFER')
-	oStrZ03:RemoveField('Z03_MOTORI')
 	oStrZ03:RemoveField('Z03_ADMIN')
 	oStrZ03:RemoveField('Z03_OBSV')
 
@@ -269,8 +207,8 @@ return
 /*Seta propriedades da estrutura de dados*/
 static function SetPropM(oStrSF2,oStrZ03,oStrZ07)
 
-	oStrZ07:SetProperty('Z07_SITUAC', MODEL_FIELD_VALID, {||_validadata()})
-	//oStrZ07:SetProperty('Z07_DSCSIT', MODEL_FIELD_INIT, {||posicione("Z04",1,FWXFILIAL("Z04")+M->Z07_SITUAC,"Z04_STATUS")})
+	oStrZ07:SetProperty('Z07_SITUAC', MODEL_FIELD_VALID, {|| _validadata()})
+	//oStrZ07:SetProperty('Z07_DSCSIT', MODEL_FIELD_INIT, {|| posicione('Z04',1,fwxFilial('Z04')+M->Z07_SITUAC,'Z04_STATUS')})
 
 return
 
@@ -281,6 +219,7 @@ static function setPropV(oStrSF2, oStrZ03, oStrZ07)
 
 	oStrZ03:setProperty('Z03_ITEM', MVC_VIEW_CANCHANGE, .F. )
 	oStrZ07:setProperty('Z07_ITEMST', MVC_VIEW_CANCHANGE, .F. )
+	// Inicializa a descrição da situação com lookup em Z04 ao abrir/entrar na linha
 	//oStrZ07:setProperty('Z07_DSCSIT', MVC_VIEW_INIBROW, 'posicione("Z04",1,FWXFILIAL("Z04")+M->Z07_SITUAC,"Z04_STATUS")'  )
 
 return
@@ -308,29 +247,28 @@ return _lRet
 /*Nao permite deletar linhas na alteracao*/
 static function COMP023LPRE(oModelGrid, nLinha, cAcao, cCampo)
 
-	local lRet			:= .T.
-	local oModel		:= oModelGrid:getModel()
-	//local oModelSF2		:= oModel:getModel('FIELD_SF2')
-	local oModelZ07		:= oModel:getModel('GRID_Z07')
-	local nOperation	:= oModel:getOperation()
-	
 	local 	cCodSituacao	as char,;
-			cSituacao		as char
+			cSituacao		as char,;
+			lCancela		as logical,;
+			lAdmin			as logical
 
 	cCodSituacao	:= oModelZ07:getValue('Z07_SITUAC')
 	cSituacao		:= posicione('Z04',1,xFilial('Z04')+cCodSituacao,'Z04_STATUS')
-	
-	if RetCodUsr() != '000000'
+	lCancela		:= posicione('Z04',1,xFilial('Z04')+cCodSituacao,'Z04_FLCANC')
+	lAdmin			:= u_EstaGrp(RetCodUsr(),'000000')	//Grupo de Administradores
+
+	if !lAdmin
 		if cCodSituacao $ '|08|09|10|11|12|16|17|18|19|20|27|99|' //ENTREGUE|ENTREGUE PARCIAL|DEVOLVIDO|ENTREGAR DIRETO|
+//		if lCancela //nao permite inlcuir, alterar ou excluir linhas com situação bloquedo cancelamento
 			if cAcao == 'SETVALUE' .and. nOperation == 4	//alterando uma linha
 				lRet	:= .F.
 				help(,,'Help',,'Não é permitido alterar situação de um pedido já '+alltrim(cSituacao)+'.', 1, 0)
 			
 			elseif cAcao == 'ADDLINE' .and. nOperation == 4	//adicionando uma nova linha
 				lRet	:= .F.
-				help(,,'Help',,'Não é permitido alterar situação de um pedido já '+alltrim(cSituacao)+'.', 1, 0)
+				help(,,'Help',,'Não é permitido incluir situação de um pedido já '+alltrim(cSituacao)+'.', 1, 0)
 			
-			elseif cAcao == 'DELETE' .AND. nOperation == 4	
+			elseif cAcao == 'DELETE' .AND. nOperation == 4	//deletando uma linha
 				lRet	:= .F.
 				help(,,'Help',,'Não é permitido apagar linha com situação já '+alltrim(cSituacao)+'.', 1, 0)
 			
@@ -338,8 +276,7 @@ static function COMP023LPRE(oModelGrid, nLinha, cAcao, cCampo)
 		endif
 	endif
 
-return lRet
-
+return .T.
 
 static function CriaGat(oStrSF2,oStrZ03,oStrZ07) 
 
@@ -350,25 +287,24 @@ static function CriaGat(oStrSF2,oStrZ03,oStrZ07)
 	_aGatillho := {}
 	aAdd(_aGatillho	,FwStruTrigger('Z03_STNOTA' 	,'Z03_DSTNOT' ,'Z04->Z04_STATUS',.T.,'Z04',1 ,'xFilial("Z04")+M->Z03_STNOTA'))
 	aAdd(_aGatillho	,FwStruTrigger('Z03_STOCOR' 	,'Z03_DSTOCO' ,'Z05->Z05_STATUS',.T.,'Z05',1 ,'xFilial("Z05")+M->Z03_STOCOR'))
-//	aAdd(_aGatillho	,FwStruTrigger('Z03_MOTORI' 	,'Z03_NOMMOT' ,'DA4->DA4_NREDUZ',.T.,'DA4',1 ,'xFilial("DA4")+M->Z03_MOTORI'))
+//	aAdd(_aGatillho	,FwStruTrigger('Z03_MOTORI','Z03_NOMMOT' ,'DA4->DA4_NREDUZ',.T.,'DA4',1 ,'xFilial("DA4")+M->Z03_MOTORI'))
 	
 	For _iGat := 1 to Len(_aGatillho)
 		oStrZ03:AddTrigger( _aGatillho[_iGat][1], _aGatillho[_iGat][2], _aGatillho[_iGat][3], _aGatillho[_iGat][4] )
 	Next _iGat
 	
 	/* Gatilhos Z07*/
-/*	_aGatillho := {}
-	aAdd(_aGatillho	,FwStruTrigger('Z07_SITUAC', 'Z07_DSCSIT', 'Z04->Z04_STATUS',.T.,'Z04',1 ,'xFilial("Z04")+M->Z07_SITUAC'))
-	
+	_aGatillho := {}
+//	aAdd(_aGatillho	,FwStruTrigger('Z07_SITUAC', 'Z07_DSCSIT', 'Z04->Z04_STATUS',.T.,'Z04',1 ,'xFilial("Z04")+M->Z07_SITUAC'))
+
 	For _iGat := 1 to Len(_aGatillho)
 		oStrZ07:AddTrigger( _aGatillho[_iGat][1], _aGatillho[_iGat][2], _aGatillho[_iGat][3], _aGatillho[_iGat][4] )
 	Next _iGat
-*/
 return
 
 
 /*Mostrar Campos em Tela */
-Static Function VerCmpP(cTab, cCampo , cTipo)
+static function VerCmpP(cTab, cCampo , cTipo)
 
 	Local 	_lRet		as logical,;
 			_cCampos	as char
@@ -378,14 +314,14 @@ Static Function VerCmpP(cTab, cCampo , cTipo)
 	if cTab == 'SF2'
 		_cCampos:= 'F2_DOC|F2_SERIE|F2_CLIENTE|F2_LOJA|F2_EMISSAO|F2_PLIQUI|F2_PBRUTO|F2_VEND1|F2_HORA|F2_XNOMECL|F2_VEND1|F2_XVEND1|F2_XSTNOTA|F2_XDSTNOT|F2_XTOTAL'
 	elseif cTab == 'Z03'
-		_cCampos:= 'Z03_FILIAL|Z03_ITEM|Z03_CARGA|Z03_SEQCAR|Z03_STNOTA|Z03_DSTNOT|Z03_SERIE|Z03_NOTA'
+		_cCampos:= 'Z03_FILIAL|Z03_ITEM|Z03_CARGA|Z03_SEQCAR|Z03_STNOTA|Z03_DSTNOT|Z03_SERIE|Z03_NOTA|Z03_MOTORI|Z03_CONFER'
 	endif
 
 	If Alltrim(cCampo) $ _cCampos
 		_lRet := .T.
 	EndIf
 
-Return _lRet  
+return _lRet  
 
 
 /*Botao customizado*/
@@ -449,6 +385,26 @@ static function FClass(oModelGrid, nLine, cAction, cField)
 	oModelZ07:goLine(_nLinZ07)
 
 return _lRet
+
+/* BLoad para GRID_Z07: inicializa Z07_DSCSIT para linhas existentes */
+static function MV05001_BLOAD_Z07(oModelGrid)
+	local _lRet := .T.
+	local _n
+	local cSit := ''
+	local cDesc := ''
+	for _n := 1 to oModelGrid:Length()
+		oModelGrid:Goline(_n)
+		if !oModelGrid:IsDeleted()
+			cSit := oModelGrid:getValue('Z07_SITUAC')
+			if !empty(alltrim(cSit))
+				cDesc := posicione('Z04',1,fwxFilial('Z04')+cSit,'Z04_STATUS')
+				if !empty(alltrim(cDesc))
+					oModelGrid:SetValue('Z07_DSCSIT', cDesc)
+				endif
+			endif
+		endif
+	next
+	return _lRet
 
 /*Ponte de Entrada MV05001LOK*/
 static function MV05001LOK(oModelGrid, nLine, cAction, cField)
