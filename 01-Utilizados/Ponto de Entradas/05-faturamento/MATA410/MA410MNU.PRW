@@ -73,12 +73,12 @@ ONDE:Parametros do array a Rotina:
 		aadd(aSubRotina,{'Consulta Pedidos','U_MV05006()',0,1,0,Nil})
 		aadd(aSubRotina,{'Imp Pedidos','U_RD05002()',0,1,0,Nil}) 
 		aadd(aSubRotina,{'Imp Pedidos Aglutinados','U_MV05005()',0,1,0,Nil}) 
-		aadd(aSubRotina,{'DANFE','U_XDANFEFAT()',0,2,0,Nil})
-		aadd(aSubRotina,{'Boleto Itaú','U_RD06010(FunName(), .T., .T.)',0,2,0,Nil})
 		aadd(aSubRotina,{'Enviar Boleta','MsgRun("Enviando boleta...","Processando...",{|| U_MA410_EnvioBoleta() })',0,2,0,Nil})
 
 	endif
 
+	aadd(aSubRotina,{'DANFE','U_XDANFEFAT()',0,2,0,Nil})
+	aadd(aSubRotina,{'Boleto Itaú','U_RD06010(FunName(), .T., .T.)',0,2,0,Nil})
 	aadd(aSubRotina,{'Gerar PIX a VISTA','U_X410Pix()',0,2,0,nil})
 	aadd(aSubRotina,{'Dt Saída','u_AltParam("MV_DSAIENT")',0,2,0,Nil})
 
@@ -96,32 +96,52 @@ user function MA410_EnvioBoleta()
 return .T.
 
 user function xDanfeFAT()
+	local	aArea		as object,;
+			aSL1		as object
+	
+	local	cLocal		as caracter
+			cEspecie	as caracter,;
+			cLocalTmp	as caracter
 
-	local	aArea	:=	getArea(),;
-			aSL1	:= SL1->(getArea()),;
-			cEspecie	as caracter
+	aArea		:=	getArea(),;
+	aSL1		:= SL1->(getArea()),;
 
-	//private lViewPDF	:= .T.
+	cEspecie	:= posicione('SF2', 1, FwxFilial('SF2') + SC5->C5_NOTA + SC5->C5_SERIE, 'F2_ESPECIE')
 
 	cLocalTmp	:= GetTempPath()
 
-	cEspecie:= posicione('SF2', 1, FwxFilial('SF2') + SC5->C5_NOTA + SC5->C5_SERIE, 'F2_ESPECIE')
-	
-	//IFF(SC5->C5_SERIE=="004",U_ImpDanfe(SC5->C5_NOTA,SC5->C5_SERIE,""),.T.)
-	if alltrim(cEspecie) $ 'SPED|RPS'
-		//U_ImpDanfe(SC5->C5_NOTA,SC5->C5_SERIE,.T.,.T.)
-		u_zGerDanfe(SC5->C5_NOTA,SC5->C5_SERIE,.T.)
-	
-	elseif alltrim(cEspecie) == 'NFCE'
-		dbSelectArea('SL1')
-		SL1->(DbSetOrder(2))
-		SL1->(dbGoTop())
-		if SL1->(dbSeek(xFilial('SL1')+SC5->C5_SERIE+SC5->C5_NOTA))
-			LjNfceImp(SL1->L1_FILIAL,SL1->L1_NUM)
+	cLocal		:= alltrim(getmv('MV_XLOCAL'))
+
+	if cLocal == '1'
+		if alltrim(cEspecie) $ 'SPED|RPS'
+			u_zGerDanfe(SC5->C5_NOTA,SC5->C5_SERIE,.T.)
+		
+		elseif alltrim(cEspecie) == 'NFCE'
+			dbSelectArea('SL1')
+			SL1->(DbSetOrder(2))
+			SL1->(dbGoTop())
+			if SL1->(dbSeek(xFilial('SL1')+SC5->C5_SERIE+SC5->C5_NOTA))
+				LjNfceImp(SL1->L1_FILIAL,SL1->L1_NUM)
+			endif
 		endif
-		SL1->(RestArea(aSL1))
-		RestArea(aArea)
+
+	elseif cLocal == '2'
+		if alltrim(cEspecie) $ 'SPED|RPS'
+			u_zGerDanfe(SC5->C5_NOTA,SC5->C5_SERIE,.T.)
+		
+		elseif alltrim(cEspecie) == 'NFCE'
+			dbSelectArea('SL1')
+			SL1->(DbSetOrder(2))
+			SL1->(dbGoTop())
+			if SL1->(dbSeek(xFilial('SL1')+SC5->C5_SERIE+SC5->C5_NOTA))
+				LjNfceImp(SL1->L1_FILIAL,SL1->L1_NUM)
+			endif
+		endif
+
 	endif
+
+	fwRestArea(aSL1)
+	fwRestArea(aArea)
 
 return .T.
 

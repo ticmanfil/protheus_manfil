@@ -3892,7 +3892,7 @@ user function NTEncerrada(pStNota)
 return lRet
 
 
-User Function zGerDanfe(cNota, cSerie, pViewPDF, pXML, cPasta)
+user Function zGerDanfe(cNota, cSerie, pViewPDF, pXML, cPasta)
 
 	Local aArea     := GetArea()
 	Local cIdent    := ""

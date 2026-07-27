@@ -150,7 +150,8 @@ static function CriaTemp(oTmp)
             aFields as array
 
     //iniciando as variaveis
-    cAlias  := 'tmp'+FWTimeStamp(1)
+    cAlias  := getnextalias()
+//    cAlias  := 'tmp'+FWTimeStamp(1)
     aFields := BuscaEstrutura()
 
     oTmp:= FWTemporaryTable():New(cAlias)

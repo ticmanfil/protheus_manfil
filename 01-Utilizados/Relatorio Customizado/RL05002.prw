@@ -172,7 +172,7 @@ Return cArquivo
 ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 /*/
 
-Static Function DANFEProc(	oDanfe	, lEnd		, cIdEnt	, cVal1,; 
+static function DANFEProc(	oDanfe	, lEnd		, cIdEnt	, cVal1,; 
 							cVal2	, lExistNfe	, lIsLoja	, nTipo)
 
 Local aArea      := GetArea()
@@ -210,9 +210,9 @@ Local nCursor	:= 0
 Local lBreak	:= .F.
 Local aGrvSF3   := {}
 Local lImpSimp  := .F.
-Local lUsaColab	:= UsaColaboracao("1") 
-Local lMVGfe	:= GetNewPar( "MV_INTGFE", .F. ) // Se tem integração com o GFE
-Local lSdoc  	:= TamSx3("F3_SERIE")[1] == 14
+Local lUsaColab	:= UsaColaboracao('1') 
+Local lMVGfe	:= GetNewPar( 'MV_INTGFE', .F. ) // Se tem integração com o GFE
+Local lSdoc  	:= TamSx3('F3_SERIE')[1] == 14
 Local cSerie 	:= ""
 Local cSerId 	:= ""
 Local cFrom 	:= ""
@@ -296,7 +296,7 @@ If !lImpDir
 			FROM %Table:SF3% SF3
 			WHERE
 			SF3.F3_FILIAL = %xFilial:SF3% AND
-				SF3.F3_SERIE = %Exp:MV_PAR03% AND
+			SF3.F3_SERIE = %Exp:MV_PAR03% AND
 			SF3.F3_NFISCAL >= %Exp:MV_PAR01% AND
 			SF3.F3_NFISCAL <= %Exp:MV_PAR02% AND
 			%Exp:cWhere% AND
@@ -308,7 +308,7 @@ If !lImpDir
 	#ELSE
 		cIndex    		:= CriaTrab(NIL, .F.)
 		cChave			:= IndexKey(6)
-		cCondicao 		:= 'F3_FILIAL == "' + xFilial("SF3") + '" .And. '
+		cCondicao 		:= 'F3_FILIAL == "' + xFilial('SF3') + '" .And. '
 		cCondicao 		+= 'SF3->F3_SERIE =="'+ MV_PAR03+'" .And. '
 		cCondicao 		+= 'SF3->F3_NFISCAL >="'+ MV_PAR01+'" .And. '
 		cCondicao		+= 'SF3->F3_NFISCAL <="'+ MV_PAR02+'" .And. '
