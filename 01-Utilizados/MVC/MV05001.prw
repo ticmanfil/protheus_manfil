@@ -249,17 +249,17 @@ static function COMP023LPRE(oModelGrid, nLinha, cAcao, cCampo)
 
 	local 	cCodSituacao	as char,;
 			cSituacao		as char,;
-			lCancela		as logical,;
+			lLib			as logical,;
 			lAdmin			as logical
 
 	cCodSituacao	:= oModelZ07:getValue('Z07_SITUAC')
 	cSituacao		:= posicione('Z04',1,xFilial('Z04')+cCodSituacao,'Z04_STATUS')
-	lCancela		:= posicione('Z04',1,xFilial('Z04')+cCodSituacao,'Z04_FLCANC')
+	lLib			:= posicione('Z04',1,xFilial('Z04')+cCodSituacao,'Z04_LIB')
 	lAdmin			:= u_EstaGrp(RetCodUsr(),'000000')	//Grupo de Administradores
 
 	if !lAdmin
-		if cCodSituacao $ '|08|09|10|11|12|16|17|18|19|20|27|99|' //ENTREGUE|ENTREGUE PARCIAL|DEVOLVIDO|ENTREGAR DIRETO|
-//		if lCancela //nao permite inlcuir, alterar ou excluir linhas com situação bloquedo cancelamento
+//		if cCodSituacao $ '|08|09|10|11|12|16|17|18|19|20|27|99|' //ENTREGUE|ENTREGUE PARCIAL|DEVOLVIDO|ENTREGAR DIRETO|
+		if !lLib //nao permite inlcuir, alterar ou excluir linhas com situação bloquedo operar no controle de situacao de pedidos
 			if cAcao == 'SETVALUE' .and. nOperation == 4	//alterando uma linha
 				lRet	:= .F.
 				help(,,'Help',,'Não é permitido alterar situação de um pedido já '+alltrim(cSituacao)+'.', 1, 0)
