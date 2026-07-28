@@ -29,26 +29,46 @@ Setor-------------: Faturamento
 /*/
 user function RD06010(cFuncao, pDanfe, pBoleta, pViewPDF)
 
-	local	aArea		:= getArea(),;
-			aAreaSC5	:= SC5->(getArea()),;
-			aAreaSF2	:= SF2->(getArea()),;
-			aAreaSL1	:= SL1->(getArea())
+	local	aArea		as object,;
+			aAreaSC5	as object,;
+			aAreaSF2	as object,;
+			aAreaSL1	as object,;
+			cLocal		as char
+
+	local	aTitulo		as array,;
+			aItem		as array,;
+			lRet		as logical,;
+			cSerie		as char,;
+			cNota		as char,;
+			cCliente	as char,;
+			cLoja		as char,;
+			cParcela	as char
 			
-	local	aTitulo		:= {},;
-			aItem		:= {},;
-			lRet		:= .F.,;
-			cSerie		:= '',;
-			cNota		:= '',;
-			cCliente	:= '',;
-			cLoja		:= '',;
-			cParcela	:= ''
-			
-	private	lDanfe		:= pDanfe,;
-			lBolet		:= pBoleta,;
-			lViewPDF	:= pViewPDF
+	private	lDanfe		as logical,;
+			lBolet		as logical,;
+			lViewPDF	as logical
+
 
 	default pViewPDF	:= .T.
 
+	aArea		:= getArea()
+	aAreaSC5	:= SC5->(getArea())
+	aAreaSF2	:= SF2->(getArea())
+	aAreaSL1	:= SL1->(getArea())
+	cLocal		:= alltrim(getmv('MV_XLOCAL'))
+			
+	aTitulo		:= {}
+	aItem		:= {}
+	lRet		:= .F.
+	cSerie		:= ''
+	cNota		:= ''
+	cCliente	:= ''
+	cLoja		:= ''
+	cParcela	:= ''
+			
+	lDanfe		:= pDanfe
+	lBolet		:= pBoleta
+	lViewPDF	:= pViewPDF
 
 	if cFuncao $ 'MATA410|LOJA701|MATA461'
 		
@@ -92,7 +112,7 @@ user function RD06010(cFuncao, pDanfe, pBoleta, pViewPDF)
 		aadd(aItem,cLoja)
 		aadd(aItem,'N')			//Impresso Bordero
 		aadd(aItem,'N')			//Impresso Boleto
-		aadd(aItem,cSerie)		//Incluido serie por Fabricio Antunes
+		aadd(aItem,cSerie)
 		aadd(aitem,cParcela)
 		aadd(aTitulo,aItem)
 		
@@ -100,43 +120,16 @@ user function RD06010(cFuncao, pDanfe, pBoleta, pViewPDF)
 
 	else
 		lRet	:= .F.
-		Alert('Programa '+alltrim(FunName())+' não previsto para usar este RDMAKE.'+chr(10)+chr(13);
-				+'Favor informe ao administrador do sistema.'+chr(10)+chr(13);
+		u_msgErro('Programa '+alltrim(FunName())+' não previsto para usar este RDMAKE.'+CRLF;
+				+'Favor informe ao administrador do sistema.'+CRLF;
 				+'Essa ação será ABORTADA.')
 				
 	endif
 	
 	if lRet	
-
-		/*if MsgYesNo("Deseja enviar por e-mail?")
-			
-			for nX:=1 to Len(aTitulo)
-				U_FATWS001(aTitulo[nX,3],aTitulo[nX,8],aTitulo[nX,4],aTitulo[nX,5],aTitulo[nX,2],aTitulo[nX,9],.F.)
-			next nX
-			//MSGINFO("E-mail enviado com sucesso")
-		
-		else
-			lViewPDF	:= .T.
-			nX			:= Len(aTitulo)
-
-			if lDanfe
-				if alltrim(SF2->F2_ESPECIE) $ 'SPED|RPS'
-					u_zGerDanfe(aTitulo[nX,3], aTitulo[nX,2], lViewPDF)
-				elseif SF2->F2_ESPECIE == 'NFCE'
-					LjNfceImp(SL1->L1_FILIAL,SL1->L1_NUM)
-				endif
-			endif
-			
-			if lBolet
-				U_RD06007(cFuncao,aTitulo,lViewPDF)
-			endif
-				
-		endif
-		*/
 		U_RD06007(cFuncao,aTitulo)
-
 	endif
-	
+
 	restArea(aAreaSL1)
 	restArea(aAreaSF2)
 	restArea(aAreaSC5)

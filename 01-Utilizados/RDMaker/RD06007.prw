@@ -31,19 +31,29 @@ Setor-------------: Faturamento
 =====================================================================================================================================
 /*/
 user function RD06007(cFuncao, aTitulo)
-
-	local	nX			:= 0,;
-			cQry		:= '',;
-			cTitulo		:= ''
+	local	nX			as numeric,;
+			cQry		as char,;
+			cTitulo		as char
 			
-	//Variaveis do Bancor receptor
-	local	_cBanco		:= '',;
-			_cAgenc		:= '',;
-			_cConta		:= '',;	
-			cChvSA6		:= alltrim(getMV('CO_BOLETO')),; //Retorna banco+agencia+conta para geração de boleto
-			_cNumBord	:= '',;
-			_dDataBord	:= dtos(DDATABASE),;
-			_TpOper		:= 'I'
+	local	_cBanco		as char,;
+			_cAgenc		as char,;
+			_cConta		as char,;	
+			cChvSA6		as char,;
+			_cNumBord	as char,;
+			_dDataBord	as char,;
+			_TpOper		as char
+
+	nX			:= 0
+	cQry		:= ''
+	cTitulo		:= ''
+			
+	_cBanco		:= ''
+	_cAgenc		:= ''
+	_cConta		:= ''	
+	cChvSA6		:= alltrim(getMV('CO_BOLETO'))
+	_cNumBord	:= ''
+	_dDataBord	:= dtos(DDATABASE)
+	_TpOper		:= 'I'
 
 	private	cSeqInt		:= ''
 	
@@ -74,8 +84,6 @@ user function RD06007(cFuncao, aTitulo)
 	endif
 	
 	cQry	:= 'exec dbo.PR_RD06007 @TITULOS = ' +chr(39)+ cTitulo+chr(39)
-	
-	//dbUseArea(.T.,'TOPCONN',cQry,'TMPTIT',.F.,.T.)
 	tcQuery cQry new alias 'TMPTIT'
 	
 	//02.02 - Gerando Bordero		

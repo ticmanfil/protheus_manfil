@@ -80,11 +80,6 @@ user function MV05005()
     aColumns:= BuscaColums(@oTmpPedidos)
 
     DEFINE MSDIALOG oDlgGrp TITLE cTitulo FROM 000, 000  TO nJanAltu, nJanLarg COLORS 0, 16777215 PIXEL
-
-        //Botões
-        //@ 006, (nJanLarg/2-001)-(0052*01) BUTTON oBtnFech  PROMPT "Fechar"       SIZE 050, 018 OF oDlgGrp ACTION (oDlgGrp:End()) PIXEL
-        //@ 006, (nJanLarg/2-001)-(0052*02) BUTTON oBtnLege  PROMPT "Importar"     SIZE 050, 018 OF oDlgGrp ACTION (U_MV05005A(@oTmpPedidos)) PIXEL
-  
         //Dados
         @ 006, 003 GROUP oGrpDad TO (nJanAltu/2-003), (nJanLarg/2-003) PROMPT "" OF oDlgGrp COLOR 0, 16777215 PIXEL
         oGrpDad:oFont := oFontBtn
@@ -97,15 +92,10 @@ user function MV05005()
         oBrw:SetSemaphore(.T.)
         oBrw:SetIgnoreARotina(.T.)
         oBrw:SetMenuDef('MV05005')
-        //oBrw:SetFieldFilter(aColumns)
 
         oBrw:SetDescription(cTitulo)
         oBrw:SetColumns(aColumns)
 
-        //oBrw:DisableFilter()
-        //oBrw:DisableConfig()
-        //oBrw:DisableReport()
-        //oBrw:DisableSeek()
         oBrw:DisableSaveConfig()
         oBrw:DisableDetails()
         oBrw:DisableReport()
@@ -141,6 +131,7 @@ static function BuscaEstrutura()
     aadd(aCampos,{'VALOR'       , getSx3cache('F2_VALBRUT','X3_TIPO')   , getSx3cache('F2_VALBRUT','X3_TAMANHO')    , getSx3cache('F2_VALBRUT','X3_DECIMAL')    , getSx3cache('F2_VALBRUT','X3_PICTURE')    })
     aadd(aCampos,{'ESTADO'      , getSx3cache('F2_EST','X3_TIPO')       , getSx3cache('F2_EST','X3_TAMANHO')        , getSx3cache('F2_EST','X3_DECIMAL')        , getSx3cache('F2_EST','X3_PICTURE')        })
     aadd(aCampos,{'OK'          , getSx3cache('F2_OK','X3_TIPO')        , getSx3cache('F2_OK','X3_TAMANHO')         , getSx3cache('F2_OK','X3_DECIMAL')         , getSx3cache('F2_OK','X3_PICTURE')         })
+    aadd(aCampos,{'PEDIDO'      , getSx3cache('D2_PEDIDO','X3_TIPO')    , getSx3cache('D2_PEDIDO','X3_TAMANHO')     , getSx3cache('D2_PEDIDO','X3_DECIMAL')     , getSx3cache('D2_PEDIDO','X3_PICTURE')     })
     
 return aCampos
 
@@ -207,6 +198,7 @@ static function PreencheDados(oTmp)
                     (cAlias)->CLIENTE   := TB01->F2_XCLIENTE
                     (cAlias)->VALOR     := TB01->F2_VALBRUT
                     (cAlias)->ESTADO    := TB01->F2_EST
+                    (cAlias)->PEDIDO    := TB01->D2_PEDIDO
                     (cAlias)->(msunlock())
                 endif
             endif
@@ -263,7 +255,7 @@ user function MV05005A(oTmp,oBrw,oDlgGrp)
     (cAlias)->(dbGoTop())
     while !(cAlias)->(eof())
         if oBrw:IsMark(cmark)
-            aadd(aPedidos,{(cAlias)->CODCLIENTE,(cAlias)->LOJA,(cAlias)->SERIE,(cAlias)->DOCUMENTO,(cAlias)->CLIENTE,(cAlias)->ESTADO,'X'})
+            aadd(aPedidos,{(cAlias)->CODCLIENTE,(cAlias)->LOJA,(cAlias)->SERIE,(cAlias)->DOCUMENTO,(cAlias)->CLIENTE,(cAlias)->ESTADO,'X',(cAlias)->PEDIDO})
             nTotal+= (cAlias)->VALOR
         endif
         (cAlias)->(dbSkip())
