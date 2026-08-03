@@ -74,12 +74,11 @@ ONDE:Parametros do array a Rotina:
 		aadd(aSubRotina,{'Imp Pedidos','U_RD05002()',0,1,0,Nil}) 
 		aadd(aSubRotina,{'Imp Pedidos Aglutinados','U_MV05005()',0,1,0,Nil}) 
 		aadd(aSubRotina,{'DANFE','U_XDANFEFAT()',0,2,0,Nil})
-		aadd(aSubRotina,{'Boleto Itaú','U_RD06010(FunName(), .T., .T.)',0,2,0,Nil})
-		aadd(aSubRotina,{'Enviar Boleta','MsgRun("Enviando boleta...","Processando...",{|| U_MA410_EnvioBoleta() })',0,2,0,Nil})
+		aadd(aSubRotina,{'Gera Boleto','U_RD06010(FunName(), .T., .T.)',0,2,0,Nil})
+		aadd(aSubRotina,{'Registra Boleto','MsgRun("Enviando boleta...","Processando...",{|| U_MA410_EnvioBoleta() })',0,2,0,Nil})
 
 	endif
 
-	aadd(aSubRotina,{'Gerar PIX a VISTA','U_X410Pix()',0,2,0,nil})
 	aadd(aSubRotina,{'Dt Saída','u_AltParam("MV_DSAIENT")',0,2,0,Nil})
 
 	aadd(aRotina,{'Customizado',aSubRotina,0,4,0,Nil})
@@ -90,8 +89,8 @@ return aRotina
 
 user function MA410_EnvioBoleta()
 	// Exibe mensagem de processamento enquanto a rotina FINA713('01') roda
-	MsgRun('Enviando boleta...','Processando...',{|| FINA713('01')})
-	u_msgInformacao('Envio da boleta finalizado.','[MA410] - Envio de Boleta')
+	MsgRun('Registrando boleta...','Processando...',{|| FINA713('01')})
+	u_msgInformacao('Boletas registradas com sucesso.','[MA410] - Envio de Boleta')
 
 return .T.
 
@@ -131,61 +130,3 @@ user function xDanfeFAT()
 	fwRestArea(aArea)
 
 return .T.
-
-user function X410Pix()
-
-	local	aArea		as object,;
-			aAreaSE4	as object
-
-	local	aCondAd	as array,;
-			nVTotal	as numeric,;
-			nOk		as numeric
-
-	aArea		:= getArea()
-	aAreaSE4	:= SE4->(getArea())
-
-	aCondAd	:= {}
-	nVTotal	:= 0
-	nOk		:= 0
-
-	dbSelectArea('SE4')
-	SE4->(dbGoTop())
-	while !SE4->(eof())
-		aadd(aCondAd,SE4->E4_CODIGO)
-		SE4->(dbSkip())
-	enddo
-
-	nOk:= aScan(aCondAd,SC5->C5_CONDPAG)
-
-	if nOk > 0	//a condicao de pagamento do pedido é de adiantamento
-		nVTotal:= VlTPed()
-	endif
-
-	fwRestArea(aAreaSE4)
-	fwRestArea(aArea)
-
-return nil
-
-/*/{Protheus.doc} CalcMaFisBrowser
-Recalcula o pedido posicionado no Browser usando a engine de impostos (MaFis).
-/*/
-Static Function VlTPed()
-	local	cAlias		as caracter,;
-			cProcedure	as caracter,;
-			cWhere		as caracter
-
-	local	cNumPed		as caracter,;
-			nVlTotal	as decimal
-
-	cNumped	:= SC5->C5_NUM
-
-	cAlias		:= getNextAlias()
-	cProcedure	:= 'PR_VALORPEDIDO'
-	cWhere		:= '@FILIAL = "'+fwxFilial('SC5')+'", @NUMPED = "'+cNumped+'"'
-	u_PesqProc(cAlias,cProcedure,cWhere)
-	if !(cAlias)->(eof())
-		nVlTotal:= (cAlias)->(VALOR)
-	endif
-	(cAlias)->(dbCloseArea())
-
-return nVlTotal

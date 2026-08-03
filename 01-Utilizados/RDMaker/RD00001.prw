@@ -4468,23 +4468,47 @@ Chamado(SPS)------:
 Setor-------------: TODAA EMPRESA
 ===============================================================================================================================
 /*/
-user Function Stamps(cTabela)
+user Function Stamps()
 
 	local	lRet	as logical
 
-	lRet:= .F.
-
-	tClink()
+	//tela
+	local 	oGet01,oDlg as object,;
+			cTabela		as character,;
+			cForm		as character,;
+			nOpca		as character
 	
-	tCConfig('SETUSERROWSTAMP=ON')
-	tCConfig('SETAUTOSTAMP=ON')
+	lRet	:= .F.
+	cForm	:= '[RD00001 - Stamps] - Criando os campos S_T_A_M_P e I_N_S_D_T...'
+	cTabela	:= '   '
 
-	tcRefresh(cTabela)
+	//SetPrvt('oDlg1','oSay1','oSBtnOk','oSBtnCan','oMGet1')
+	
+	DEFINE MSDIALOG oDlg TITLE cForm From 0,0 TO 250,530 PIXEL
+	
+	@ 010,004 SAY OemToansi('Tabela:') SIZE 052, 008 OF oDlg PIXEL
+	@ 010,060 MSGET oGet01 VAR cTabela SIZE 052,008 OF oDlg PIXEL
 
-	tCConfig('SETUSERROWSTAMP=OFF')
-	tCConfig('SETAUTOSTAMP=OFF')
+	DEFINE SBUTTON FROM 100, 206 When .T. TYPE 1 ACTION (oDlg:End(),nOpca:='1') ENABLE OF oDlg
+	DEFINE SBUTTON FROM 100, 234 When .T. TYPE 2 ACTION (oDlg:End(),nOpca:='2') ENABLE OF oDlg
+	
+	ACTIVATE MSDIALOG oDlg CENTERED	
 
-	TcUnlink()
+	if nOpca == '1'
+	
+		tClink()
+		
+		tCConfig('SETUSERROWSTAMP=ON')
+		tCConfig('SETAUTOSTAMP=ON')
+
+		tcRefresh(cTabela)
+
+		tCConfig('SETUSERROWSTAMP=OFF')
+		tCConfig('SETAUTOSTAMP=OFF')
+
+		TcUnlink()
+		
+	endif
 
 return lRet
 
