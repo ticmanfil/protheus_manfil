@@ -955,6 +955,11 @@ static function Valida(cVeiculo,cDtIni,cDtFin,cHrIni,cHrFin,nKmIni,nKmFin)
 			cMsg	+= CRLF + 'DATA de RETORNO não pode ser menor que a DATA de SAIDA!'
 		endif
 
+		if !empty(cDtIni) .and. !empty(cDtFin) .and. cDtIni == cDtFin .and. !empty(cHrIni) .and. !empty(cHrFin) .and. alltrim(cHrFin) < alltrim(cHrIni)
+			lRet	:= .F.
+			cMsg	+= CRLF + 'Hora de RETORNO não pode ser menor que a Hora de SAIDA quando as datas são iguais!'
+		endif
+
 		if !empty(cDtIni) .and. cDtIni > DDATABASE
 			lRet	:= .F.
 			cMsg	+= CRLF + 'DATA de RETORNO maior que a DATA BASE!'
