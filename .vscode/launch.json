@@ -57,8 +57,11 @@
 		},
 		{
 			"label": "SIGACFG"
+		},
+		{
+			"label": "U_SC02001"
 		}
 	],
-	"lastProgramExecuted": "SIGAFAT",
+	"lastProgramExecuted": "U_SC02001",
 	"lastProgramArguments": []
 }

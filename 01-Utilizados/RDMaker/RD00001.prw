@@ -4291,7 +4291,7 @@ user function FIntPed(aPedidos)
 					Z50->Z50_NUMPED := cNumPed
 					Z50->Z50_SERINT := T01->F2_SERIE
 					Z50->Z50_NFINT  := T01->F2_DOC
-					Z50->Z50_PEDINT	:= T01->F2_PEDIDO
+					Z50->Z50_PEDINT	:= T01->D2_PEDIDO
 					Z50->(msUnlock())
 				endif
 			endif

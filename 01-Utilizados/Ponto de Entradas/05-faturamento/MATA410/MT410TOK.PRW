@@ -165,12 +165,14 @@ static function VldFiscal(nOpc,cForm)
 					cDescProd	:= ''
 					cReserva	:= ''
 					fVenda		:= ''
+					nDesconto	:= 0
 
 					cItem		:= aCols[nX,ASCAN(aHeader,{|x| ALLTRIM(x[2]) == 'C6_ITEM' })]
 					cProduto	:= aCols[nX,ASCAN(aHeader,{|x| ALLTRIM(x[2]) == 'C6_PRODUTO' })]
 					nQtdVen		:= aCols[nX,ASCAN(aHeader,{|x| ALLTRIM(x[2]) == 'C6_QTDVEN' })]
 					cDescProd	:= aCols[nX,ASCAN(aHeader,{|x| ALLTRIM(x[2]) == 'C6_DESCRI' })]
 					cReserva	:= aCols[nX,ASCAN(aHeader,{|x| ALLTRIM(x[2]) == 'C6_CONTRAT' })]
+					nDesconto	:= aCols[nX,ASCAN(aHeader,{|x| ALLTRIM(x[2]) == 'C6_DESCONT' })]
 					fVenda		:= posicione('SB1',1,xfilial('SB1')+cProduto,'B1_XVENDA')
 					nPesoB		+= nQtdVen*posicione('SB1',1,fwXFilial('SB1')+cProduto,'B1_PESBRU')
 					nPesoL		+= nQtdVen*posicione('SB1',1,fwXFilial('SB1')+cProduto,'B1_PESO')
@@ -181,7 +183,7 @@ static function VldFiscal(nOpc,cForm)
 						lRet:= .F.
 						return lRet
 					endif
-					
+
 				endif
 			next
 			M->C5_PESOL		:= nPesoL
@@ -430,12 +432,21 @@ static function VldGeral(nOpc,cForm)
 						endif
 
 						//VALIDANDO DESCONTOS CONCEDIDOS
+						if nDescItem <= -100 .or. nDescItem >= 100
+							u_msgErro('Desconto (idenização) fora da faixa permitido!'+CRLF+;
+										'Item: '+cValToChar(cItem)+' - '+cProduto+' - '+cDescProd+CRLF+;
+										'Desc.: '+cValToChar(nDescItem)+' %',cForm)
+							lRet:= .F.
+							return lRet
+						endif
+						
 						if nDescItem > nDescAut .and. empty(cNumOrc)
 							u_msgErro('Desconto acima do permitido...'+CRLF+;
 										'Item: '+cValToChar(cItem)+' - '+cProduto+' - '+cDescProd+CRLF+;
 										'Desc.: '+cValToChar(nDescItem)+' %',cForm)
 							lRet:= .F.
 							return lRet
+						
 						endif
 
 						//VALIDANDO CONDICAO DE PAGAMENTO
