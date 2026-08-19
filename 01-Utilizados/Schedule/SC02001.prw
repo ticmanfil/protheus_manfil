@@ -31,65 +31,15 @@ Setor-------------: 02 - FISCAL / COMPRAS
 =====================================================================================================================================
 /*/
 
-user function SC02001(cEmpProc, cFilProc)
+user function SC02001()
 
-	local cQry      as character
-	local lRet      as logical
-	local cEmp      as character
-	local cFil      as character
-	local cLogFile  as character
-	local cMsgLog   as character
+	local cQry		as character
+	
+	PREPARE ENVIRONMENT EMPRESA '01' FILIAL '0101'
 
-	// Tratamento dos parâmetros de entrada
-	default cEmpProc := '01'
-	default cFilProc := '0101'
-
-	cQry     := 'exec dbo.PR_SC02001'
-	lRet     := .F.
-	cEmp     := cEmpProc
-	cFil     := cFilProc
-	cLogFile := '\logs\SC02001_' + DToS(Date()) + '.log'
-
-	// Log de Início de Execução
-	cMsgLog := '[' + DToC(Date()) + ' ' + Time() + '] - [SC02001] Início do Job de Sincronização CKOCOL.'
-	FWLogMsg('INFO', /*cTransactionId*/, 'SC02001', 'JOBS', /*cCategory*/, '01', cMsgLog, 0, 0, {})
-	u_GravaLog(cLogFile, cMsgLog)
-
-	PREPARE ENVIRONMENT EMPRESA cEmp FILIAL cFil
-
-	// Execução da Procedure de Integração
-	lRet := u_ExecQry(cQry, .F.) // Nao encerrar em caso de falha
+		cQry:= 'exec dbo.PR_SC02001'
+		tcsqlExec(cQry)
 
 	RESET ENVIRONMENT
 
-	// Log de Término e Status
-	IF lRet
-		cMsgLog := '[' + DToC(Date()) + ' ' + Time() + '] - [SC02001] Sincronização executada com SUCESSO.'
-	ELSE
-		cMsgLog := '[' + DToC(Date()) + ' ' + Time() + '] - [SC02001] ERRO ao executar a Stored Procedure PR_SC02001.'
-	ENDIF
-
-	FWLogMsg(IF(lRet, 'INFO', 'ERROR'), /*cTransactionId*/, 'SC02001', 'JOBS', /*cCategory*/, '01', cMsgLog, 0, 0, {})
-	u_GravaLog(cLogFile, cMsgLog)
-
-return lRet
-
-/*/{Protheus.doc} u_GravaLog
-Função auxiliar para escrita de log em arquivo .txt físico no servidor
-/*/
-static function u_GravaLog(cPathFile, cTexto)
-	local nHandle as numeric
-
-	IF !File(cPathFile)
-		nHandle := FCreate(cPathFile)
-	ELSE
-		nHandle := FOpen(cPathFile, 2) // Modo Leitura/Escrita
-		FSeek(nHandle, 0, 2)           // Vai para o final do arquivo
-	ENDIF
-
-	IF nHandle != -1
-		FWrite(nHandle, cTexto + CRLF)
-		FClose(nHandle)
-	ENDIF
-
-return Nil
+return
