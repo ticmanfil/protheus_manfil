@@ -95,6 +95,7 @@ Return
 	AltParam				-> Alterar o valor de um parametro de ambiente
 	DescParam				-> Descrever um parametro de ambiente
 	PesqProc				-> Consulta uma tabela por procedure
+	PMotorista				-> Retorna o nome do motorista da carga
 
 /*/
 
@@ -4661,3 +4662,31 @@ user function PesqProc(cAlias,cProcedure,cWhere)
     tcquery cQry new alias (cAlias)
 
 return
+
+/*/
+===============================================================================================================================
+Programa----------: PMotorista
+Autor-------------: Renato Fuzessy Teixeira Filho
+Data da Criacao---: 10/07/2026
+===============================================================================================================================
+Descrição---------: Este programa serve para retornar o motorista que foi fazer a entrega do pedido
+===============================================================================================================================
+Uso---------------: geral
+===============================================================================================================================
+Parametros--------: pCarga		-> numero da carga a ser pesquisado
+===============================================================================================================================
+Retorno-----------: nil
+===============================================================================================================================
+Chamado(SPS)------: 
+===============================================================================================================================
+Setor-------------: Geral
+===============================================================================================================================
+/*/
+user function PMotorista(pCarga)
+	local	cCodMotorista	as char,;
+			cNomeMotorista	as char
+
+	cCodMotorista	:= posicione('DAK',1,fwxFilial('DAK')+pCarga,'DAK_MOTORI')
+	cNomeMotorista	:= posicione('DA4',1,fwxFilial('DA4')+cCodMotorista,'cCodMotorista')
+
+return cNomeMotorista

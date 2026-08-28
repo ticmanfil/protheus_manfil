@@ -67,7 +67,7 @@ ONDE:Parametros do array a Rotina:
 		aadd(aSubRotina,{'Imprimir','U_ImpPedVen(SC5->C5_NUM,FunName(),,SC5->C5_XVIAS)',0,2,0,Nil})
 		aadd(aSubRotina,{'Imp Orçamento','u_RL05016()',0,2,0,nil})
 		aadd(aSubRotina,{'Analise Custo', 'U_RL05003(SC5->C5_NUM)' , 0 , 1})
-		aadd(aSubRotina,{'Gera Retorno de Remessa','u_RD05015()',0,2,0,nil})
+		//aadd(aSubRotina,{'Gera Retorno de Remessa','u_RD05015()',0,2,0,nil})
 		
 	elseif cLocal == "2"	
 		aadd(aSubRotina,{'Consulta Pedidos','U_MV05006()',0,1,0,Nil})
