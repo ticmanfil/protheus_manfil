@@ -124,6 +124,12 @@ static function EnviaEmail(nVlNovo, nVlAntigo)
 return
 
 static function CadIContab(cCodCli, cNome) 
+	local	dDtIni	as date	,;
+			cDtIni	as string
+
+	dDtIni	:= DDATABASE
+	cDtIni	:= str(year(dDtIni),4)+'0101'
+	dDtIni	:= stod(cDtIni)
 
 	dbSelectArea('CTD')
 	CTD->(dbSetOrder(1))
@@ -135,7 +141,7 @@ static function CadIContab(cCodCli, cNome)
 			CTD->CTD_CLASSE	:= '2'
 			CTD->CTD_DESC01	:= cNome
 			CTD->CTD_BLOQ	:= '2'
-			CTD->CTD_DTEXIS	:= DDATABASE
+			CTD->CTD_DTEXIS	:= dDtIni
 			CTD->CTD_ITLP	:= 'C'+cCodCli
 			CTD->CTD_ITSUP	:= 'C'
 			CTD->(msUnlock())
