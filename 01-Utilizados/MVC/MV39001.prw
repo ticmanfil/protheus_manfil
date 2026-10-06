@@ -124,6 +124,8 @@ static function ViewDef()
 
 	local	oView	:= FWFormView():New()
 	
+	aItens:= {}
+
 	/*Definir propriedades da Viewdef*/
 	FAddCampoG(oStrDAK,oStrDAI)
 	FSetPropG(oStrDAK,oStrDAI)
@@ -152,8 +154,6 @@ static function ViewDef()
 		return
 	endif
 */	
-
-	aItens:= {}
 
 return oView
 
@@ -886,7 +886,7 @@ static function MV39001MOV(pCarga,pSeqCarga,pSituacao,pData,pHora)
 					u_MovSitPed(cSRRes,cNFRes,'10',pData,pHora,pCarga,pSeqCarga)
 				endif
 
-			elseif pSituacao $ '08|16|17|18|19'		//SAIDA | CANC CAGAR | RETORNO DE  ENTREGA | CANC. RETORNO | CANC. SAIU ENTR
+			elseif pSituacao $ '08|16|17|18|19|20'		//SAIDA | CANC CAGAR | RETORNO DE  ENTREGA | CANC. RETORNO | CANC. SAIU ENTR | CANC. PROC. ENTREGA 
 				u_MovSitPed(cSerie, cNota, pSituacao,pData,pHora,pCarga,pSeqCarga)
 
 				if !empty(cNFRes) .and. !empty(cSRRes) 

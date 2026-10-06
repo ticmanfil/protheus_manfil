@@ -297,7 +297,7 @@ static function MV00001LOK(oModelGrid, nLine, cAction, cField)
 	
 	oModelSF2:SetValue('F2_XSTNOTA',cCodigo)
 	oModelZ03:SetValue('Z03_STNOTA',cCodigo)
-	oModelZ03:SetValue('Z03_DSTNOT',cDesc)
+	//oModelZ03:SetValue('Z03_DSTNOT',cDesc)
 	
 	FwRestRows(_aSave)
 	

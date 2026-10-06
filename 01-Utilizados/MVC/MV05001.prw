@@ -227,21 +227,24 @@ return
 /*Funcaopara validar data */
 static function _validadata()
 
-	local _lRet		:= .T.
-	local oModel	:= FWModelActive()
-	//local oView		:= FWViewActive()
-	local oModelZ07	:= oModel:GetModel('GRID_Z07')
+	local	lRet		as logical,;
+			oModel		as object,;
+			oModelZ07	as object,;
+			cSituacao	as caracter,;
+			lAdmin		as logical
 	
-	local cSituacao	:= oModelZ07:getValue('Z07_SITUAC')	//&(readvar())
-//	local _dDataAtu	:= DDATABASE
+	lAdmin		:= u_EstaGrp(RetCodUsr(),'000000')	//Grupo de Administradores
+	lRet		:= .T.
+	oModel		:= FWModelActive()
+	oModelZ07	:= oModel:GetModel('GRID_Z07')
+	cSituacao	:= oModelZ07:getValue('Z07_SITUAC')
 
-
-	if cSituacao $ '08|09|12|15|17'
-		_lRet	:= .F.
+	if !lAdmin .and. cSituacao $ '08|09|12|15|17'
+		lRet	:= .F.
 		help(,,'Help',,'Situação Invalida', 1, 0)
 	endif
 		
-return _lRet
+return lRet
 
 
 /*Nao permite deletar linhas na alteracao*/
