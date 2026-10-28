@@ -6,30 +6,7 @@
 	"permissions": {
 		"authorizationtoken": ""
 	},
-	"connectedServer": {
-		"id": "zn6u8rw9i8emv0xw6840pwyhmto9c1",
-		"type": "totvs_server_protheus",
-		"name": "CMP_GER",
-		"port": 4099,
-		"address": "192.168.0.203",
-		"buildVersion": "7.00.240223P",
-		"secure": false,
-		"includes": [
-			"C:\\Arquivos\\Workspace\\include"
-		],
-		"environments": [
-			"CMP_GER"
-		],
-		"username": "admin",
-		"environment": "CMP_GER",
-		"token": "djM6em42dThydzlpOGVtdjB4dzY4NDBwd3lobXRvOWMxOjE6MTkyLjE2OC4wLjIwMzo0MDk5OjA6Ny4wMC4yNDAyMjNQOjM=:djE6Q01QX0dFUjphZG1pbjpySFZtU0Q5ZWhDRTdlODdWdWdSbzhQcEhROWxTeHpBekNld0ZML1lON0RzPQ==|djI6MTc5MTU3MDk3OTowOjE6MQ==.NMP263LDciN7sjFv72P3EZLX7h0Owwu1L3SWFun6CF3MGV7r5DX7UJlEhIgft7YvEv/Yyf8kururP5upTVZqlFOlwAivamfPKc2v9ps9CB0uKamMWi4BiNIqRGfDR2vAe/2PmqkjG5cSf/oScgDRwyQpVDastB0+olXFsNRRsQV0na7xCpODbl0Q22dFP2n634dGh5OLCtpLjnXVI95Gdy7m2SASSnovNYOSvYKPLEB5XWdDV24xbFYPhNyYyS/x6Y6nVnLEnglJdBtLIfZhZyvab4NVNN4PUAnrlTcgxxA5MLLxyzVC05FTaElR6m44vEnlP2lgd9SroUxp/AkbvQ==",
-		"informations": {
-			"permissions": [],
-			"errorMessage": "",
-			"environmentDetectedType": "totvs_server_protheus",
-			"serverDetectedType": "totvs_server_protheus"
-		}
-	},
+	"connectedServer": {},
 	"configurations": [
 		{
 			"id": "9xiin2z6zjkmd3tx6ox5vumc62n56x",
@@ -95,7 +72,31 @@
 			],
 			"username": "admin",
 			"environment": "CMP_GER",
-			"token": "djM6em42dThydzlpOGVtdjB4dzY4NDBwd3lobXRvOWMxOjE6MTkyLjE2OC4wLjIwMzo0MDk5OjA6Ny4wMC4yNDAyMjNQOjM=:djE6Q01QX0dFUjphZG1pbjpySFZtU0Q5ZWhDRTdlODdWdWdSbzhQcEhROWxTeHpBekNld0ZML1lON0RzPQ==|djI6MTc5MTU3MDk3OTowOjE6MQ==.NMP263LDciN7sjFv72P3EZLX7h0Owwu1L3SWFun6CF3MGV7r5DX7UJlEhIgft7YvEv/Yyf8kururP5upTVZqlFOlwAivamfPKc2v9ps9CB0uKamMWi4BiNIqRGfDR2vAe/2PmqkjG5cSf/oScgDRwyQpVDastB0+olXFsNRRsQV0na7xCpODbl0Q22dFP2n634dGh5OLCtpLjnXVI95Gdy7m2SASSnovNYOSvYKPLEB5XWdDV24xbFYPhNyYyS/x6Y6nVnLEnglJdBtLIfZhZyvab4NVNN4PUAnrlTcgxxA5MLLxyzVC05FTaElR6m44vEnlP2lgd9SroUxp/AkbvQ==",
+			"token": "djM6em42dThydzlpOGVtdjB4dzY4NDBwd3lobXRvOWMxOjE6MTkyLjE2OC4wLjIwMzo0MDk5OjA6Ny4wMC4yNDAyMjNQOjM=:djE6Q01QX0dFUjphZG1pbjozVFFqYUxaWG1VblY1OVhCNWJwdkJJZ2ZQWWFkbXdkSUJBQm10S0ZVNjg4PQ==|djI6MTc5Mjc4NjcyOTowOjE6MQ==.F8Z3KZDw9bJMvLBMYmqbzTH4Ky0QOZPaYUhxkFGC4r2J9X8rtCUbc0Zziw6beGj3Fgjq9VCUeg5yxcNsAzauslwxLCZ8AMzXazo52DgooWlOVZq+W0s8X7Uaa88YB2zIn7P1UtM6s83GvS9x38AUKFCZMek931MiZrIs+juea4EqeDfGYGJJce95y3yq2zi3ogvc01errvF/oHetYMTOhH291AEqhWqDKHLuoSbrPNIcAiWx6eCcUWfsNBrmCswAxvOEU7Z/ne+IubtfilI6vuMTpQyt/O9jPI31f+GL4146JjPbvYkVmI7fbVApK8TLTsB4F42JOxdrvdrdYWPatg==",
+			"informations": {
+				"permissions": [],
+				"errorMessage": "",
+				"environmentDetectedType": "totvs_server_protheus",
+				"serverDetectedType": "totvs_server_protheus"
+			}
+		},
+		{
+			"id": "tyfl3onzurnmvb782bdaob2b4idzec",
+			"type": "totvs_server_protheus",
+			"name": "DEV_GER",
+			"port": 7099,
+			"address": "192.168.0.203",
+			"buildVersion": "7.00.240223P",
+			"secure": false,
+			"includes": [
+				"C:\\Arquivos\\Workspace\\include"
+			],
+			"environments": [
+				"DEV_GER"
+			],
+			"username": "admin",
+			"environment": "DEV_GER",
+			"token": "djM6dHlmbDNvbnp1cm5tdmI3ODJiZGFvYjJiNGlkemVjOjE6MTkyLjE2OC4wLjIwMzo3MDk5OjA6Ny4wMC4yNDAyMjNQOjM=:djE6REVWX0dFUjphZG1pbjpySUxnek5ucUxySEtUN3ZCWHlSMFBxY2ZnK2tQWUJCQTh3ZmRLeThKOTVNPQ==|djI6MTc5MjE2OTE3NTowOjE6MQ==.g2XQotRZ3vmSDXYQx6wDXVlXTpZtbkNCnCBQ9NGqK36r2IYTbrlx255e/+captmcD2GkDFo2rLpPRxksW7tArtzq3MjnSyohDc1KG+jG2NrTnQe3Ge8D8Vjb7o024D0nAJUQtvoLUS/tUx1MAS+yxi7VvWI+e5iv8eYIMy3bzqeQvwbhnGL2HCHHoj8gsP57jRmkVMtmFOoXKSqmrMCh1t+sYCT95yNN81aUUE37Y9BUNSpSuTyp/ZrX+LM0nThjdEw59JBfjRHrM7LxvLOOSA5qG7UjEdL0r2kDlMtfWrPm/m5AZ3eJio73NWphNOQp4fl7bjWstQcgxVAX1dpBDA==",
 			"informations": {
 				"permissions": [],
 				"errorMessage": "",
@@ -263,7 +264,14 @@
 			"zn6u8rw9i8emv0xw6840pwyhmto9c1:CMP_GER",
 			{
 				"id": "zn6u8rw9i8emv0xw6840pwyhmto9c1",
-				"token": "djM6em42dThydzlpOGVtdjB4dzY4NDBwd3lobXRvOWMxOjE6MTkyLjE2OC4wLjIwMzo0MDk5OjA6Ny4wMC4yNDAyMjNQOjM=:djE6Q01QX0dFUjphZG1pbjpySFZtU0Q5ZWhDRTdlODdWdWdSbzhQcEhROWxTeHpBekNld0ZML1lON0RzPQ==|djI6MTc5MTU3MDk3OTowOjE6MQ==.NMP263LDciN7sjFv72P3EZLX7h0Owwu1L3SWFun6CF3MGV7r5DX7UJlEhIgft7YvEv/Yyf8kururP5upTVZqlFOlwAivamfPKc2v9ps9CB0uKamMWi4BiNIqRGfDR2vAe/2PmqkjG5cSf/oScgDRwyQpVDastB0+olXFsNRRsQV0na7xCpODbl0Q22dFP2n634dGh5OLCtpLjnXVI95Gdy7m2SASSnovNYOSvYKPLEB5XWdDV24xbFYPhNyYyS/x6Y6nVnLEnglJdBtLIfZhZyvab4NVNN4PUAnrlTcgxxA5MLLxyzVC05FTaElR6m44vEnlP2lgd9SroUxp/AkbvQ=="
+				"token": "djM6em42dThydzlpOGVtdjB4dzY4NDBwd3lobXRvOWMxOjE6MTkyLjE2OC4wLjIwMzo0MDk5OjA6Ny4wMC4yNDAyMjNQOjM=:djE6Q01QX0dFUjphZG1pbjozVFFqYUxaWG1VblY1OVhCNWJwdkJJZ2ZQWWFkbXdkSUJBQm10S0ZVNjg4PQ==|djI6MTc5Mjc4NjcyOTowOjE6MQ==.F8Z3KZDw9bJMvLBMYmqbzTH4Ky0QOZPaYUhxkFGC4r2J9X8rtCUbc0Zziw6beGj3Fgjq9VCUeg5yxcNsAzauslwxLCZ8AMzXazo52DgooWlOVZq+W0s8X7Uaa88YB2zIn7P1UtM6s83GvS9x38AUKFCZMek931MiZrIs+juea4EqeDfGYGJJce95y3yq2zi3ogvc01errvF/oHetYMTOhH291AEqhWqDKHLuoSbrPNIcAiWx6eCcUWfsNBrmCswAxvOEU7Z/ne+IubtfilI6vuMTpQyt/O9jPI31f+GL4146JjPbvYkVmI7fbVApK8TLTsB4F42JOxdrvdrdYWPatg=="
+			}
+		],
+		[
+			"tyfl3onzurnmvb782bdaob2b4idzec:DEV_GER",
+			{
+				"id": "tyfl3onzurnmvb782bdaob2b4idzec",
+				"token": "djM6dHlmbDNvbnp1cm5tdmI3ODJiZGFvYjJiNGlkemVjOjE6MTkyLjE2OC4wLjIwMzo3MDk5OjA6Ny4wMC4yNDAyMjNQOjM=:djE6REVWX0dFUjphZG1pbjpySUxnek5ucUxySEtUN3ZCWHlSMFBxY2ZnK2tQWUJCQTh3ZmRLeThKOTVNPQ==|djI6MTc5MjE2OTE3NTowOjE6MQ==.g2XQotRZ3vmSDXYQx6wDXVlXTpZtbkNCnCBQ9NGqK36r2IYTbrlx255e/+captmcD2GkDFo2rLpPRxksW7tArtzq3MjnSyohDc1KG+jG2NrTnQe3Ge8D8Vjb7o024D0nAJUQtvoLUS/tUx1MAS+yxi7VvWI+e5iv8eYIMy3bzqeQvwbhnGL2HCHHoj8gsP57jRmkVMtmFOoXKSqmrMCh1t+sYCT95yNN81aUUE37Y9BUNSpSuTyp/ZrX+LM0nThjdEw59JBfjRHrM7LxvLOOSA5qG7UjEdL0r2kDlMtfWrPm/m5AZ3eJio73NWphNOQp4fl7bjWstQcgxVAX1dpBDA=="
 			}
 		]
 	],

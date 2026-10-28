@@ -78,7 +78,8 @@ static function pPesqDados()
 			cFormaPgto	as caracter,;
 			cCondPagto	as caracter,;
 			lNota		as logical,;
-			cBoleto		as caracter
+			cBoleto		as caracter,;
+			fVender		as caracter
 
 	local	cQry		as caracter
 
@@ -112,6 +113,7 @@ static function pPesqDados()
     cFormaPgto  := posicione('SE4',1,fwxFilial('SE4')+cCondPagto,'E4_FORMA')
 	lNota		:= posicione('SA1',1,fwxFilial('SA1')+SC5->C5_CLIENTE+SC5->C5_LOJACLI,'A1_XNF')
 	cBoleto		:= iif(lNota,'T','F')
+	fVender		:= posicione('SA3',1,fwxFilial('SA3')+SC5->C5_VEND1,'A3_XBLQVEN')
 
 	if !empty(cFormaPgto) .and. !cFormaPgto $ 'R$ CH'
 
@@ -179,7 +181,13 @@ static function pPesqDados()
 
 		lRet:= .T.
 
-		if alltrim(cTipoEnt) == 'E' .and. nValor < 500 .and. nFrete < 20 .and. cUFEnt == 'MG' .and. cCodMunEnt == '04007' .and. !RetCodUsr()$"000000 0000006 0000030"
+		if fVender == 'S'
+			u_msgErro('Vendedor bloqueado para venda!!!'+CRLF;
+					+'Favor entrar em contato com o supervisor de vendas.')
+			lRet:= .F.
+		endif
+
+		if lRet .and. alltrim(cTipoEnt) == 'E' .and. nValor < 500 .and. nFrete < 20 .and. cUFEnt == 'MG' .and. cCodMunEnt == '04007' .and. !RetCodUsr()$"000000 0000006 0000030"
 			u_msgErro('Frete inválido!!!'+CRLF;
 					+'Valor frete menor que R$ 20,00.')
 			lRet:= .F.

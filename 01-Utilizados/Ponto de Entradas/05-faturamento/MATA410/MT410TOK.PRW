@@ -209,9 +209,7 @@ static function VldGeral(nOpc,cForm)
 			nPrcUnit	as numeric,;
 			nPrcVen		as numeric,;
 			cReserva	as caractere,;
-			fVenda		as caractere,;
 			cVendedor	as caractere,;
-			fVender		as caractere,;
 			nDescItem	as numeric,;
 			nDescAut	as numeric,;
 			nPrcTab		as numeric,;
@@ -248,7 +246,6 @@ static function VldGeral(nOpc,cForm)
 	cReserva	:= ''
 	fVenda		:= ''
 	cVendedor	:= ''
-	fVender		:= ''
 	nPrcTab		:= 0
 	cTabPrc		:= M->C5_TABELA
 	cCondPgto	:= M->C5_CONDPAG
@@ -280,7 +277,7 @@ static function VldGeral(nOpc,cForm)
 		SA3->(dbGoTop())
 		if SA3->(dbSeek(fwxFilial('SA3')+M->C5_VEND1))
 			cVendedor	:= SA3->A3_NOME
-			fVender		:= SA3->A3_XBLQVEN
+			//fVender		:= SA3->A3_XBLQVEN
 			cRegVen		:= SA3->A3_REGIAO
 		endif
 		nDescAut	:= posicione('ZZ1',1,xFilial('ZZ1')+__CUSERID,'ZZ1_DESCON')
@@ -288,12 +285,12 @@ static function VldGeral(nOpc,cForm)
 		cDescCPagto	:= posicione('SE4',1,xFilial('SE4')+cCondPgto,'E4_DESCRI')
 		nDescont	:= M->C5_DESCONT
 
-		//validando se o vendedor esta bloqueado para vendas
+		/*//validando se o vendedor esta bloqueado para vendas
 		if lRet .and. fVender	== 'S'
 			u_msgErro('Vendedor '+alltrim(cVendedor)+' Bloqueado para Vendas!!!...',cForm)
 			lRet	:= .F.
 			return lRet
-		endif
+		endif*/
 
 		//validando a regiao do cliente x vendedores
 		if cRegCli != '00' .and. cRegVen != '00' //cliente e vendedores sao de regioes diferente de genericos
